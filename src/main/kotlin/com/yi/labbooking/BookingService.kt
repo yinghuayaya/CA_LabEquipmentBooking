@@ -45,8 +45,23 @@ class BookingService {
 
     private fun bookingId(number: Long) = "BK-" + number.toString().padStart(ID_WIDTH, '0')
 
-    private companion object {
-        const val ID_WIDTH = 4
+    companion object {
+        private const val ID_WIDTH = 4
+
+        internal fun restore(items: List<Equipment>, history: List<Booking>, next: Long): BookingService {
+            require(next > 0) { "Invalid booking sequence." }
+            val service = BookingService()
+            items.forEach(service::addEquipment)
+            for (booking in history) {
+                val number = booking.bookingId.removePrefix("BK-").toLongOrNull()
+                require(number != null && number in 1 until next && service.bookingId(number) == booking.bookingId) {
+                    "Invalid booking ID or sequence: ${booking.bookingId}"
+                }
+                service.insert(booking)
+            }
+            service.nextSequence = next
+            return service
+        }
     }
 
     private val equipment = HashMap<String, Equipment>()
