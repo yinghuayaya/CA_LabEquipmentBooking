@@ -4,9 +4,7 @@ An individual Kotlin command-line project for Software Development Tools CA1 (20
 
 ## Current state
 
-This is the local toolchain bootstrap, not a completed application. Equipment management, reservations, JSON persistence, command parsing, and tests are pending. No GitHub remote or pull requests exist. Feature implementation will start after authorization of a suitable new repository so that development and review history remain genuine.
-
-On 2026-11-26, the committed wrapper launched Gradle 8.12.1 on Windows 11 with Temurin 17.0.21.1+2. The bootstrap passed `clean build`. Gradle reported `NO-SOURCE` for tests and Detekt, and skipped JaCoCo because the source sets were empty. Feature verification begins with the equipment catalog.
+Development is underway in the private GitHub repository. The catalog supports equipment lookup by ID, sorted listing, case-insensitive search, and deletion. The booking and persistence layers and CLI follow in subsequent feature PRs.
 
 ## Development environment
 
@@ -52,7 +50,7 @@ JSON storage will retain equipment, complete booking history, and the ID sequenc
 4. `feature/cli-testing-analysis`: parser, execution, remaining tests, coverage and analysis.
 5. `feature/documentation`: complete command examples, verified results, reflection and demonstration guide.
 
-No feature branches have been presented as completed. Repository creation and publication require the owner's confirmation. The remote must be a new suitable project, never the calculator repository.
+Each feature PR targets main and runs the JDK 17 build on GitHub Actions.
 
 ## Reflection and assessment evidence
 
@@ -70,4 +68,4 @@ The official brief additionally requires a ten-minute live demonstration, a PDF 
 - [JaCoCo Gradle plugin](https://docs.gradle.org/8.12.1/userguide/jacoco_plugin.html)
 - Assessment authority: the supplied `CA.docx`, Software Development Tools Continuous Assessment Brief 2026–2027.
 
-OpenAI Codex assisted with environment inspection, build configuration, and documentation. This is assisted work, not evidence of unaided student authorship. The student must review and understand all submitted code and maintain this disclosure as work continues.
+OpenAI Codex assisted with environment inspection, build configuration, implementation, tests, and documentation. This is assisted work, not evidence of unaided student authorship. The student must review and understand all submitted code and maintain this disclosure as work continues.
