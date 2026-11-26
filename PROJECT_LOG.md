@@ -46,3 +46,8 @@ Dates use America/Chicago. Entries record work as performed; they are not a reco
 
 PR #1 passed CI and merged at 8e6700f. Started the booking branch from that merge. Each equipment schedule indexes only active intervals. Cancellation releases its slot and keeps its history. Equipment deletion rejects any linked booking.
 JDK 17 wrapper build passed with 15 tests and Detekt. Rejected conflicts leave the sequence unchanged.
+
+## 2026-11-26 — JSON persistence
+
+PR #2 merged after successful CI. Added serialized snapshots with a stored sequence. Loading rebuilds the active index using the same checks as creation. A sibling lock serializes CLI processes across read, edit and replace. Temporary-directory tests exercise restart, corruption and failed updates.
+The wrapper build passed, including the persistence tests, JaCoCo and Detekt. Corrupt files remained byte-for-byte unchanged in the tested cases.
