@@ -51,3 +51,8 @@ JDK 17 wrapper build passed with 15 tests and Detekt. Rejected conflicts leave t
 
 PR #2 merged after successful CI. Added serialized snapshots with a stored sequence. Loading rebuilds the active index using the same checks as creation. A sibling lock serializes CLI processes across read, edit and replace. Temporary-directory tests exercise restart, corruption and failed updates.
 The wrapper build passed, including the persistence tests, JaCoCo and Detekt. Corrupt files remained byte-for-byte unchanged in the tested cases.
+
+## 2026-11-26 — Command line and integration tests
+
+Branched from merged PR #3. Added an option schema, strict local time parsing, command execution and error exit codes. CLI tests run separate invocations against a temporary data file.
+Detekt found two long lines in the first CLI build. Wrapped both without suppressions. Clean build and installDist passed; 48 tests passed with none skipped, zero Detekt findings and 227 of 231 lines covered. The installed launcher displayed help.
