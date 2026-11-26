@@ -56,3 +56,8 @@ The wrapper build passed, including the persistence tests, JaCoCo and Detekt. Co
 
 Branched from merged PR #3. Added an option schema, strict local time parsing, command execution and error exit codes. CLI tests run separate invocations against a temporary data file.
 Detekt found two long lines in the first CLI build. Wrapped both without suppressions. Clean build and installDist passed; 48 tests passed with none skipped, zero Detekt findings and 227 of 231 lines covered. The installed launcher displayed help.
+
+## 2026-11-26 — Documentation and assessment verification
+
+PR #4 passed Linux CI and merged at c1faeeb. Updated the README with working examples and measured test results. Prepared the Markdown report and live demonstration outline. Generated submission files are kept outside tracked sources.
+Exported REPORT.md with Pandoc and printed the HTML to a two-page A4 PDF. Inspected both rendered pages. Exercised the README commands in a temporary directory with the installed Windows launcher and checked the resulting JSON history and sequence.
