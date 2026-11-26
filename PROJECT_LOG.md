@@ -34,3 +34,10 @@ Dates use America/Chicago. Entries record work as performed; they are not a reco
 - Set `JAVA_HOME` for the verification process. `.\gradlew.bat --version` succeeded on Windows 11 with Gradle 8.12.1 and launcher JVM 17.0.21.1. Started `.\gradlew.bat clean build` against the bootstrap commit.
 - The initial plugin download progressed slowly. Configured Maven Central first for plugins with the Plugin Portal as fallback. Used a resumed Maven Central download for the Kotlin plugin and verified its published digest before caching it.
 - Ran `.\gradlew.bat clean build --console=plain --info` successfully in 3m 39s. The task graph included `detekt NO-SOURCE`, `test NO-SOURCE`, and `jacocoTestReport SKIPPED`. No tests executed or reports were produced. The feature implementation still requires the authorized remote and genuine PRs.
+
+## 2026-11-26 — Equipment catalog
+
+- Verified the private repository and authenticated account using GitHub CLI. Remote main and the clean local checkout both pointed to dbe3028. There were no application sources or prior PRs.
+- Created feature/equipment-catalog from the verified main commit. Implemented ID lookup, deterministic listing, four-field substring search, validated insertion, and deletion. Added independent JUnit tests and an Ubuntu JDK 17 build for PRs.
+- Started the Windows clean build with the project-local wrapper and the portable JDK.
+- Corrected two Detekt findings and diagnosed a JDK 17 Windows worker classpath encoding mismatch in the Chinese project directory. Letting the Windows launcher use its native charset fixed class discovery. The ordinary wrapper clean build passed with 7 tests, zero skipped or failed, zero Detekt findings, and JaCoCo output.
