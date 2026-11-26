@@ -1,6 +1,8 @@
 # Project log
 
-Dates use America/Chicago. Entries record work as performed; they are not a reconstructed weekly history.
+Dates use America/Chicago. Read the entries in order: the early download failures describe the state at the time of each attempt. The later JDK 17 entry records the first successful build. The first tests ran on the equipment branch.
+
+The original development entries follow. The [retrospective](PROJECT_RETROSPECTIVE.md) compares them with the Git and GitHub records.
 
 ## 2026-11-26 — Environment inspection and bootstrap started
 
