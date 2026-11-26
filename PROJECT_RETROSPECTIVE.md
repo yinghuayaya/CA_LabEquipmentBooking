@@ -41,9 +41,11 @@ The available evidence cannot establish what work, if any, took place outside th
 
 ## Final verification and evidence gaps
 
-All five feature-branch PR checks and all five subsequent pushes to `main` passed the Ubuntu JDK 17 GitHub Actions workflow. The acceptance record also documents a fresh Windows clone using the local Gradle dependency cache. The README session ended with one equipment item, one cancelled booking and next sequence 2. [Final CI run](https://github.com/yinghuayaya/CA_LabEquipmentBooking/actions/runs/45795416026)
+The four feature PRs and the documentation PR passed their checks. All five subsequent pushes to `main` passed the Ubuntu JDK 17 GitHub Actions workflow. The acceptance record also documents a fresh Windows clone using the local Gradle dependency cache. The README session ended with one equipment item, one cancelled booking and next sequence 2. [Original assessment CI run](https://github.com/yinghuayaya/CA_LabEquipmentBooking/actions/runs/45795416026)
 
 The saved JUnit XML reports show **48 passed, 0 failed, 0 errors and 0 skipped**: 7 catalog, 8 booking rules, 6 storage, 23 parser and 4 CLI tests. JaCoCo recorded **227/231 lines (98.3%)** and **165/191 branches (86.4%)** covered. The Detekt XML contains **zero findings**. These are the saved development results; no new build was run for this retrospective.
+
+Two documentation PRs followed the original assessment. [PR #6](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/6) passed its [CI check](https://github.com/yinghuayaya/CA_LabEquipmentBooking/actions/runs/45838969683) and merged as `7aebd0e`. The original annotated tags remain at `83f639c` (`ca1-v1.0.0`) and `7aebd0e` (`ca1-v1.0.1`). For the final wording review, see [PR #7 and its check result](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/7/checks). The [final main commit](https://github.com/yinghuayaya/CA_LabEquipmentBooking/commit/ca1-v1.0.2) is identified by `ca1-v1.0.2`. The packaged acceptance record lists the full SHA, merge time and post-merge CI run.
 
 Earlier activity would require genuine dated student evidence, such as an original design note or a dated prototype with identifiable provenance. The records contain a demonstration outline. Confirming a delivered demonstration or a build on the designated laboratory machine would require separate evidence.
 
