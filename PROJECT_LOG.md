@@ -41,3 +41,8 @@ Dates use America/Chicago. Entries record work as performed; they are not a reco
 - Created feature/equipment-catalog from the verified main commit. Implemented ID lookup, deterministic listing, four-field substring search, validated insertion, and deletion. Added independent JUnit tests and an Ubuntu JDK 17 build for PRs.
 - Started the Windows clean build with the project-local wrapper and the portable JDK.
 - Corrected two Detekt findings and diagnosed a JDK 17 Windows worker classpath encoding mismatch in the Chinese project directory. Letting the Windows launcher use its native charset fixed class discovery. The ordinary wrapper clean build passed with 7 tests, zero skipped or failed, zero Detekt findings, and JaCoCo output.
+
+## 2026-11-26 — Booking rules
+
+PR #1 passed CI and merged at 8e6700f. Started the booking branch from that merge. Each equipment schedule indexes only active intervals. Cancellation releases its slot and keeps its history. Equipment deletion rejects any linked booking.
+JDK 17 wrapper build passed with 15 tests and Detekt. Rejected conflicts leave the sequence unchanged.
