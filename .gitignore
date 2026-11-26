@@ -6,3 +6,4 @@ data/
 *.iml
 *.log
 assessment-output/
+/evidence/
