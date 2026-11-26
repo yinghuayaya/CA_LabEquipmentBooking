@@ -61,5 +61,11 @@ Detekt found two long lines in the first CLI build. Wrapped both without suppres
 
 ## 2026-11-26 — Documentation and assessment verification
 
-PR #4 passed Linux CI and merged at c1faeeb. Updated the README with working examples and measured test results. Prepared the Markdown report and live demonstration outline. Generated submission files are kept outside tracked sources.
+[PR #4](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/4) delivered the CLI and merged at 03:35:47 as `c1faeeb`. [PR #5](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/5) documented the CLI examples and measured results. It merged at 03:48:36 as `83f639c`. Prepared the Markdown report and live demonstration outline. Generated submission files are kept outside tracked sources.
 Exported REPORT.md with Pandoc and printed the HTML to a two-page A4 PDF. Inspected both rendered pages. Exercised the README commands in a temporary directory with the installed Windows launcher and checked the resulting JSON history and sequence.
+
+## 2026-11-26 — Submission maintenance
+
+[PR #6](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/6) synchronized the submission documents and ignored the packaged evidence directory. It passed CI and merged at 08:26:55 as `7aebd0e`, tagged `ca1-v1.0.1`.
+
+[PR #7](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/7) reviewed the wording and release references. The review found no comments in the eight production and five test Kotlin files. The archive record at `evidence/assessment/ACCEPTANCE.md` gives the merge time and SHA for the final tag [`ca1-v1.0.2`](https://github.com/yinghuayaya/CA_LabEquipmentBooking/releases/tag/ca1-v1.0.2).

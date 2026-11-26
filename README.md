@@ -1,6 +1,6 @@
 # Lab Equipment Booking Manager
 
-Use this Kotlin CLI to add and find lab equipment, reserve a time slot, and cancel a booking. Each command reads the same JSON file, so the next time the program runs it can show both active and cancelled bookings.
+Use this Kotlin CLI to add and find lab equipment, reserve a time slot, and cancel a booking. The JSON file keeps both active and cancelled bookings between runs.
 
 ## Build and run
 
