@@ -6,7 +6,7 @@ An individual Kotlin command-line project for Software Development Tools CA1 (20
 
 This is the local toolchain bootstrap, not a completed application. Equipment management, reservations, JSON persistence, command parsing, and tests are pending. No GitHub remote or pull requests exist. Feature implementation will start after authorization of a suitable new repository so that development and review history remain genuine.
 
-Verification status: the complete wrapper files are present and the wrapper JAR matches the published SHA-256. Binary downloads did not complete reliably; JDK 17 is not yet installed and `gradlew --version` did not finish. Consequently build, tests, coverage, and Detekt remain unverified. The commands below are the required next checks, not claims of successful execution.
+On 2026-11-26, the committed wrapper launched Gradle 8.12.1 on Windows 11 with Temurin 17.0.21.1+2. The bootstrap passed `clean build`. Gradle reported `NO-SOURCE` for tests and Detekt, and skipped JaCoCo because the source sets were empty. Feature verification begins with the equipment catalog.
 
 ## Development environment
 

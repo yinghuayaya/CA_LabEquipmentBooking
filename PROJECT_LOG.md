@@ -26,3 +26,11 @@ Dates use America/Chicago. Entries record work as performed; they are not a reco
 - Ran `git init -b main` after checking repository status, remotes, and GitHub authentication. Used the existing Git identity without changing it. No remote was added and nothing was published.
 - Results: no build completed; no tests exist or ran; no coverage report was generated; Detekt has not run. There is no claim of zero findings or BUILD SUCCESS.
 - Remaining prerequisites: install/provide a usable JDK 17, complete the Gradle download, verify the baseline, and obtain permission for a suitable new GitHub repository. The five feature branches and real PR workflow must follow those prerequisites. The application remains unimplemented.
+
+## 2026-11-26 — JDK and wrapper verified
+
+- Resumed the existing Temurin archive with `curl.exe -C -`, verified SHA-256 `eafba0944f777abdc74d5aad16049c9b5a1275b6ce99e2939ba9f7f3e6f08c87` against Adoptium metadata, and extracted it under `%LOCALAPPDATA%\CA1Tools`. Its `java -version` reports Temurin 17.0.21.1+2.
+- Retrieved the Gradle 8.12.1 binary distribution from the Tencent mirror. Verified its SHA-256 against the official value pinned in the wrapper properties before placing the ZIP in the local wrapper cache. The repository retains the official Gradle URL for clean clones.
+- Set `JAVA_HOME` for the verification process. `.\gradlew.bat --version` succeeded on Windows 11 with Gradle 8.12.1 and launcher JVM 17.0.21.1. Started `.\gradlew.bat clean build` against the bootstrap commit.
+- The initial plugin download progressed slowly. Configured Maven Central first for plugins with the Plugin Portal as fallback. Used a resumed Maven Central download for the Kotlin plugin and verified its published digest before caching it.
+- Ran `.\gradlew.bat clean build --console=plain --info` successfully in 3m 39s. The task graph included `detekt NO-SOURCE`, `test NO-SOURCE`, and `jacocoTestReport SKIPPED`. No tests executed or reports were produced. The feature implementation still requires the authorized remote and genuine PRs.
