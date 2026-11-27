@@ -69,3 +69,20 @@ Exported REPORT.md with Pandoc and printed the HTML to a two-page A4 PDF. Inspec
 [PR #6](https://github.com/yinghuayaya/LabEquipmentBooking/pull/6) synchronized the submission documents and ignored the packaged evidence directory. It passed CI and merged at 08:26:55 as `7aebd0e`. That commit was tagged for submission.
 
 [PR #7](https://github.com/yinghuayaya/LabEquipmentBooking/pull/7) reviewed the wording and release references. The review found no comments in the eight production and five test Kotlin files. The archive record at `evidence/assessment/ACCEPTANCE.md` gives the merge time and SHA for the version published at [`c3a85d6`](https://github.com/yinghuayaya/LabEquipmentBooking/commit/c3a85d65ad1fcfa182cb30e7a04ef0c80f7f6fa2).
+
+## Weekly record reviewed on 27 November 2026
+
+Yao Yi is the student responsible for this individual project. This entry reviews the Git and GitHub evidence for 26–27 November. No contemporaneous weekly records for 30 October–25 November were available in the inspected materials. The [retrospective](PROJECT_RETROSPECTIVE.md) records that gap. This summary was prepared after the merges and the entries above retain their original chronology.
+
+| GitHub date (UTC) | Work recorded | Evidence |
+|---|---|---|
+| 26 November | Added the equipment catalog, then the booking rules for conflicts, adjacent slots and cancellation. | [PR #1 · catalog](https://github.com/yinghuayaya/LabEquipmentBooking/pull/1) (`8e6700f`), [PR #2 · booking rules](https://github.com/yinghuayaya/LabEquipmentBooking/pull/2) (`076bc86`) |
+| 26 November | Added JSON storage and restoration, then CLI commands, argument validation and end-to-end command tests. | [PR #3 · persistence](https://github.com/yinghuayaya/LabEquipmentBooking/pull/3) (`1793d31`), [PR #4 · CLI and tests](https://github.com/yinghuayaya/LabEquipmentBooking/pull/4) (`c1faeeb`) |
+| 26 November | Documented the commands and measured results, synchronized the evidence paths, and polished the submission wording. | [PR #5 · project documentation](https://github.com/yinghuayaya/LabEquipmentBooking/pull/5) (`83f639c`), [PR #6 · submission documents](https://github.com/yinghuayaya/LabEquipmentBooking/pull/6) (`7aebd0e`), [PR #7 · wording review](https://github.com/yinghuayaya/LabEquipmentBooking/pull/7) (`c3a85d6`) |
+| 27 November | Merged the release documentation into main at 03:34:02 UTC and published the assessed release at 03:34:57 UTC. Both events occurred on the evening of 26 November in Chicago. | [PR #8 · release documentation](https://github.com/yinghuayaya/LabEquipmentBooking/pull/8), [assessed commit](https://github.com/yinghuayaya/LabEquipmentBooking/commit/03c1a96b63f5d3f989999c98fb24e19b432a02a9), [release v1.0.2](https://github.com/yinghuayaya/LabEquipmentBooking/releases/tag/v1.0.2) |
+
+**Decisions.** Equipment and booking IDs need direct lookup, so the service uses a HashMap for each. A TreeMap orders each item's active reservations by start time. Checking the preceding and following entries detects conflicts while allowing adjacent bookings. A local JSON snapshot holds the catalog, booking history and next ID together. It suits a small CLI that runs without a database server.
+
+**Toolchain at the assessed release.** JDK 17 gives Windows and CI a common target. The Gradle 8.12.1 wrapper fixes the build version. The build pins Kotlin 2.1.21 and kotlinx.serialization JSON 1.8.1. JUnit Jupiter 5.12.2 runs the tests, JaCoCo 0.8.13 reports line and branch coverage, and Detekt 1.23.8 runs under Gradle verification. GitHub Actions ran the clean build on Ubuntu with JDK 17 and passed both the [PR check](https://github.com/yinghuayaya/LabEquipmentBooking/actions/runs/45934801286) and the [post-merge main check](https://github.com/yinghuayaya/LabEquipmentBooking/actions/runs/45934917771).
+
+The preserved results were 48 tests passed, zero failures or skips, 227/231 lines covered (98.3%), 165/191 branches covered (86.4%), and zero Detekt findings. The CLI example in the report illustrates booking behaviour. The separate ten-minute live assessment remains pending.
