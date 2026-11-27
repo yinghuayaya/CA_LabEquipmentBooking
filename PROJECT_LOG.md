@@ -6,9 +6,9 @@ The original development entries follow. The [retrospective](PROJECT_RETROSPECTI
 
 ## 2026-11-26 — Environment inspection and bootstrap started
 
-- Read the supplied `../CA.docx` assessment brief. It requires genuine feature pull requests, contemporaneous records, disclosure of generated code, a demonstration, and submission report/tag evidence.
-- Inspected the workspace and the existing empty `CA_LabEquipmentBooking` directory. No project files, wrapper, repository, or remote existed. Other laboratory projects were left untouched.
-- Commands: `Get-ChildItem`, `java -version`, `git --version`, `git -C CA_LabEquipmentBooking status --short --branch`, `git -C CA_LabEquipmentBooking remote -v`, `gh auth status`, JDK directory inspection, and DOCX XML text extraction.
+- Read the supplied assessment brief. It requires genuine feature pull requests, contemporaneous records, disclosure of generated code, a demonstration, and submission report/tag evidence.
+- Inspected the workspace and the empty project directory. No project files, wrapper, repository, or remote existed. Other laboratory projects were left untouched.
+- Commands: `Get-ChildItem`, `java -version`, `git --version`, Git status and remote checks in the project directory, `gh auth status`, JDK directory inspection, and DOCX XML text extraction.
 - Git is 2.53.0.windows.2. GitHub CLI authentication succeeded for `yinghuayaya`. Active Java is 26; the inspected installations contain Java 25/26 rather than 17.
 - Started downloading a portable Eclipse Temurin JDK 17 and Gradle 8.12.1 into the user-local `CA1Tools` directory, outside the repository, with SHA-256 verification. No global Java settings changed.
 - Added the Gradle Kotlin DSL baseline with the requested pinned versions, JUnit Platform launcher 1.12.2, JDK 17 toolchain, JaCoCo report finalizer, and Detekt check dependency. No application or test implementation exists yet.
@@ -23,7 +23,7 @@ The original development entries follow. The [retrospective](PROJECT_RETROSPECTI
 - Verified the wrapper JAR SHA-256 against Gradle's published checksum: `2db75c40782f5e8ba1fc278a5574bab070adccb2d21ca5a6e5ed840888448046`.
 - Pinned the distribution SHA-256: `8d97a97984f6cbd2b85fe4c60a743440a347544bf18818048e611f5288d46c94`.
 - The Temurin download failed with an unexpected EOF. The partial archive was 187135009 bytes, while the API reported 191150540 bytes; its checksum did not match. It was not extracted or executed.
-- Attempted a bounded Microsoft JDK 17 download and a resumable Temurin download. Neither supplied an installed JDK during this session. Partial downloads remain outside the repository under `%LOCALAPPDATA%\CA1Tools`.
+- Attempted a bounded Microsoft JDK 17 download and a resumable Temurin download. Neither supplied an installed JDK during this session. Partial downloads remain outside the repository under the local application data directory.
 - Ran `.\gradlew.bat --version`; it began downloading Gradle but did not complete. Stopped only the download/wrapper processes started for this task after lack of progress. Wrapper execution and distribution integrity are therefore not verified, despite successful verification of the small wrapper JAR.
 - Ran `git init -b main` after checking repository status, remotes, and GitHub authentication. Used the existing Git identity without changing it. No remote was added and nothing was published.
 - Results: no build completed; no tests exist or ran; no coverage report was generated; Detekt has not run. There is no claim of zero findings or BUILD SUCCESS.
@@ -31,7 +31,7 @@ The original development entries follow. The [retrospective](PROJECT_RETROSPECTI
 
 ## 2026-11-26 — JDK and wrapper verified
 
-- Resumed the existing Temurin archive with `curl.exe -C -`, verified SHA-256 `eafba0944f777abdc74d5aad16049c9b5a1275b6ce99e2939ba9f7f3e6f08c87` against Adoptium metadata, and extracted it under `%LOCALAPPDATA%\CA1Tools`. Its `java -version` reports Temurin 17.0.21.1+2.
+- Resumed the existing Temurin archive with `curl.exe -C -`, verified SHA-256 `eafba0944f777abdc74d5aad16049c9b5a1275b6ce99e2939ba9f7f3e6f08c87` against Adoptium metadata, and extracted it under the local application data directory. Its `java -version` reports Temurin 17.0.21.1+2.
 - Retrieved the Gradle 8.12.1 binary distribution from the Tencent mirror. Verified its SHA-256 against the official value pinned in the wrapper properties before placing the ZIP in the local wrapper cache. The repository retains the official Gradle URL for clean clones.
 - Set `JAVA_HOME` for the verification process. `.\gradlew.bat --version` succeeded on Windows 11 with Gradle 8.12.1 and launcher JVM 17.0.21.1. Started `.\gradlew.bat clean build` against the bootstrap commit.
 - The initial plugin download progressed slowly. Configured Maven Central first for plugins with the Plugin Portal as fallback. Used a resumed Maven Central download for the Kotlin plugin and verified its published digest before caching it.
@@ -61,11 +61,11 @@ Detekt found two long lines in the first CLI build. Wrapped both without suppres
 
 ## 2026-11-26 — Documentation and assessment verification
 
-[PR #4](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/4) delivered the CLI and merged at 03:35:47 as `c1faeeb`. [PR #5](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/5) documented the CLI examples and measured results. It merged at 03:48:36 as `83f639c`. Prepared the Markdown report and live demonstration outline. Generated submission files are kept outside tracked sources.
+[PR #4](https://github.com/yinghuayaya/LabEquipmentBooking/pull/4) delivered the CLI and merged at 03:35:47 as `c1faeeb`. [PR #5](https://github.com/yinghuayaya/LabEquipmentBooking/pull/5) documented the CLI examples and measured results. It merged at 03:48:36 as `83f639c`. Prepared the Markdown report and live demonstration outline. Generated submission files are kept outside tracked sources.
 Exported REPORT.md with Pandoc and printed the HTML to a two-page A4 PDF. Inspected both rendered pages. Exercised the README commands in a temporary directory with the installed Windows launcher and checked the resulting JSON history and sequence.
 
 ## 2026-11-26 — Submission maintenance
 
-[PR #6](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/6) synchronized the submission documents and ignored the packaged evidence directory. It passed CI and merged at 08:26:55 as `7aebd0e`, tagged `ca1-v1.0.1`.
+[PR #6](https://github.com/yinghuayaya/LabEquipmentBooking/pull/6) synchronized the submission documents and ignored the packaged evidence directory. It passed CI and merged at 08:26:55 as `7aebd0e`. That commit was tagged for submission.
 
-[PR #7](https://github.com/yinghuayaya/CA_LabEquipmentBooking/pull/7) reviewed the wording and release references. The review found no comments in the eight production and five test Kotlin files. The archive record at `evidence/assessment/ACCEPTANCE.md` gives the merge time and SHA for the final tag [`ca1-v1.0.2`](https://github.com/yinghuayaya/CA_LabEquipmentBooking/releases/tag/ca1-v1.0.2).
+[PR #7](https://github.com/yinghuayaya/LabEquipmentBooking/pull/7) reviewed the wording and release references. The review found no comments in the eight production and five test Kotlin files. The archive record at `evidence/assessment/ACCEPTANCE.md` gives the merge time and SHA for the version published at [`c3a85d6`](https://github.com/yinghuayaya/LabEquipmentBooking/commit/c3a85d65ad1fcfa182cb30e7a04ef0c80f7f6fa2).
