@@ -127,8 +127,6 @@ The tests cover catalog operations, booking rules, parsing, command execution an
 | JaCoCo | `build/reports/jacoco/test/html/index.html` |
 | Detekt | `build/reports/detekt/detekt.html` |
 
-The earlier submission archive preserves these reports under `evidence/` and the assessment PDF and acceptance record under `evidence/assessment/`.
-
 ## 🔀 Development Workflow
 
 Each feature branch started from the latest merged `main`. After local verification, a pull request ran the independent Ubuntu JDK 17 build in GitHub Actions before integration into `main`.
