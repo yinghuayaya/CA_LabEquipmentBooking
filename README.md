@@ -1,12 +1,28 @@
-# Laboratory Equipment Booking Manager
+# 🧰 Laboratory Equipment Booking Manager
 
-Use this Kotlin CLI to add and find lab equipment, reserve a time slot, and cancel a booking. The JSON file keeps both active and cancelled bookings between runs.
+Reserve lab equipment from the command line and keep a searchable catalog and booking history in a local JSON file.
 
-## Build and run
+[![Verify on main](https://github.com/yinghuayaya/LabEquipmentBooking/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/yinghuayaya/LabEquipmentBooking/actions/workflows/verify.yml)
+![Kotlin 2.1.21](https://img.shields.io/badge/Kotlin-2.1.21-7356BF)
+![Gradle 8.12.1](https://img.shields.io/badge/Gradle-8.12.1-255B60)
+![JDK 17](https://img.shields.io/badge/JDK-17-47627A)
 
-Set `JAVA_HOME` to JDK 17. The first build requires network access. The wrapper pins Gradle 8.12.1. The build pins Kotlin 2.1.21, kotlinx.serialization JSON 1.8.1, JUnit Jupiter 5.12.2, JaCoCo 0.8.13 and Detekt 1.23.8.
+## ✨ Features
 
-Windows PowerShell, from the repository root:
+| Module | What it does |
+| --- | --- |
+| 🔬 Equipment Management | Add, list, inspect and search equipment. Delete items with no booking history. |
+| 📅 Booking Management | Reserve a time slot, reject overlaps and filter active or cancelled bookings. |
+| 💾 JSON Persistence | Restore the catalog, booking history and next booking number between runs. |
+| 🧪 Testing and Static Analysis | Run JUnit tests, generate JaCoCo coverage and check Kotlin code with Detekt through Gradle. |
+
+---
+
+## 🚀 Build and Run
+
+Install **JDK 17** and set `JAVA_HOME` to its installation directory. Run the commands below from the repository root. The wrapper downloads Gradle 8.12.1 on the first build, which requires network access. `installDist` creates the `lab-booking` launcher.
+
+### Windows PowerShell
 
 ```powershell
 .\gradlew.bat clean build installDist
@@ -15,7 +31,7 @@ $env:Path = "$PWD\build\install\lab-booking\bin;$env:Path"
 lab-booking --help
 ```
 
-Linux:
+### Linux
 
 ```sh
 ./gradlew clean build installDist
@@ -24,29 +40,47 @@ export PATH="$PWD/build/install/lab-booking/bin:$PATH"
 lab-booking --help
 ```
 
-## Commands
+## ⌨️ Commands
 
-Try this session with an empty database. IDs are case-sensitive. Search matches a substring in the ID, name, category or location, ignoring case.
+Run these examples in order with an empty database. Equipment and booking IDs are case-sensitive.
 
-```text
+### Equipment Commands
+
+Search matches a substring in the equipment ID, name, category or location, ignoring case.
+
+```sh
 lab-booking equipment add --id EQ-001 --name "Projector" --category AV --location "Lab A"
 lab-booking equipment list
 lab-booking equipment show --id EQ-001
 lab-booking equipment search --query project
+lab-booking equipment add --id EQ-002 --name Lens --category Optics --location "Lab B"
+lab-booking equipment delete --id EQ-002
+```
+
+### Booking Commands
+
+Use ISO local times. Equipment and status filters are optional and can be combined. Only active bookings can be cancelled.
+
+```sh
 lab-booking booking create --equipment EQ-001 --requester "Yao Yi" --start 2026-12-01T09:00 --end 2026-12-01T11:00 --purpose "Project work"
 lab-booking booking list
 lab-booking booking list --equipment EQ-001 --status ACTIVE
 lab-booking booking cancel --id BK-0001
 lab-booking booking list --status CANCELLED
-lab-booking equipment add --id EQ-002 --name Lens --category Optics --location "Lab B"
-lab-booking equipment delete --id EQ-002
+```
+
+### Storage and Help
+
+Use `--data-file` to select another database for one command. Both `help` and `--help` show usage.
+
+```sh
 lab-booking --data-file "demo/bookings.json" equipment list
 lab-booking help
 ```
 
-Both booking filters are optional. Use ISO local times. A 09:00–11:00 booking permits another booking starting at 11:00. Only active bookings can be cancelled. Equipment with any booking history must remain in the catalog. Invalid input and storage errors produce a diagnostic on stderr and exit code 1.
+---
 
-## Project structure
+## 🗂 Project Structure
 
 | Location | Purpose |
 |---|---|
@@ -56,39 +90,62 @@ Both booking filters are optional. Use ISO local times. A 09:00–11:00 booking 
 | `build.gradle.kts`, `settings.gradle.kts` | Configure the application, dependencies and checks |
 | `.github/workflows/verify.yml` | Run the JDK 17 build on Ubuntu |
 
-## Architecture and storage
+## ⚙️ Architecture and Storage
 
-Under `com.yi.labbooking`, `Main.kt` forwards arguments and the process exit code. `CommandParser.kt` validates commands, required options, dates and filters. `CliApplication.kt` dispatches commands and formats output. `Equipment.kt` and `Models.kt` define the catalog and reservation records.
+### CLI and Command Processing
 
-`BookingService.kt` uses separate HashMaps for average constant-time equipment and booking lookup by ID. Each equipment item has a TreeMap from active start time to booking ID. Because active slots never overlap, only the predecessor from `floorEntry` and the successor from `ceilingEntry` can conflict with a proposed slot. These lookups cost O(log n) for n active bookings of that item. Cancellation removes the start time from the schedule and keeps the booking in history.
+In `com.yi.labbooking`, `Main.kt` passes arguments to `CliApplication.kt` and returns its exit code. `CommandParser.kt` checks commands, required options, dates and filters before dispatch. `CliApplication.kt` formats results and writes input or storage errors to stderr with exit code 1. `Equipment.kt` and `Models.kt` define the domain records.
 
-`BookingStore.kt` initializes `data/bookings.json` relative to the working directory. Override it with `--data-file PATH`. `StorageDtos.kt` records equipment, history and the next ID sequence. Loading validates records and rebuilds the schedule. A sibling lock coordinates CLI processes. Successful changes replace the file from a temporary file in the same directory, using atomic replacement where supported. Invalid JSON or inconsistent records stop the command before a save. The whole snapshot is loaded per invocation, which suits a small laboratory inventory.
+### Booking Rules and Data Structures
 
-## Testing and analysis
+`BookingService.kt` uses separate `HashMap` indexes for average **O(1)** lookup by equipment or booking ID. Each equipment item has a `TreeMap` from active start time to booking ID. Because its reservations never overlap, only the neighbours found by `floorEntry()` and `ceilingEntry()` can conflict with a proposed slot. Each lookup costs **O(log n)** for *n* active bookings of that item.
 
-Run the wrapper tasks `test`, `jacocoTestReport` and `detekt` individually, or use `clean build`. Tests finalize with the coverage report; `check` includes static analysis. The Windows JDK 17 clean build on 26 November 2026 produced these results.
+Bookings use half-open intervals: a 09:00–11:00 reservation allows another to start at 11:00. Cancellation releases the slot and preserves its history. Equipment with any booking history stays in the catalog.
+
+### JSON Persistence and File Safety
+
+`BookingStore.kt` initializes `data/bookings.json` relative to the working directory. `StorageDtos.kt` describes the snapshot saved with kotlinx.serialization JSON 1.8.1. Each invocation loads the whole snapshot, validates the records and rebuilds the active schedule. This keeps storage simple for a small inventory.
+
+A `FileChannel` lock on a sibling file coordinates CLI processes across the read–modify–write operation. The store writes a temporary file in the same directory and requests atomic replacement, falling back to regular replacement if necessary. Invalid JSON or inconsistent records stop the command before a save.
+
+## 🧪 Testing and Analysis
+
+The **26 November 2026 Windows clean build on JDK 17** produced the following results with JUnit Jupiter 5.12.2, JaCoCo 0.8.13 and Detekt 1.23.8.
 
 | Check | Result |
-|---|---|
-| JUnit 5 | 48 passed, 0 failed or skipped |
-| JaCoCo lines | 227 / 231 (98.3%) |
-| JaCoCo branches | 165 / 191 (86.4%) |
-| Detekt | 0 findings; no baseline or suppressions |
+| --- | --- |
+| JUnit 5 | **48 passed**, 0 failed or skipped |
+| JaCoCo Line Coverage | **98.3%** (227/231) |
+| JaCoCo Branch Coverage | **86.4%** (165/191) |
+| Detekt | **0 findings**, no baseline or suppressions |
 
-Open `build/reports/tests/test/index.html`, `build/reports/jacoco/test/html/index.html` and `build/reports/detekt/detekt.html` after building. Tests cover catalog operations, booking rules, parsing, command execution and storage. Persistence tests use temporary directories.
+The tests cover catalog operations, booking rules, parsing, command execution and storage. Persistence tests use temporary directories. Run the wrapper tasks `test`, `jacocoTestReport` and `detekt` individually or use `clean build`. The test task finalizes with the coverage report, and `check` includes static analysis.
 
-The earlier submission archive includes preserved JUnit, JaCoCo and Detekt reports under `evidence/`, plus the assessment PDF and acceptance record under `evidence/assessment/`. To view reports from a GitHub checkout, run the build and open the `build/reports/` paths above.
+| Local report | Open after building |
+| --- | --- |
+| JUnit | `build/reports/tests/test/index.html` |
+| JaCoCo | `build/reports/jacoco/test/html/index.html` |
+| Detekt | `build/reports/detekt/detekt.html` |
 
-## Workflow and reflection
+The earlier submission archive preserves these reports under `evidence/` and the assessment PDF and acceptance record under `evidence/assessment/`.
 
-Each branch starts from the latest merged main. After local tests and analysis, its PR targets main and runs an independent Ubuntu JDK 17 build. The implementation history is split into [equipment](https://github.com/yinghuayaya/LabEquipmentBooking/pull/1), [reservations](https://github.com/yinghuayaya/LabEquipmentBooking/pull/2), [persistence](https://github.com/yinghuayaya/LabEquipmentBooking/pull/3) and [CLI](https://github.com/yinghuayaya/LabEquipmentBooking/pull/4).
+## 🔀 Development Workflow
 
-The empty bootstrap built successfully, but the first real test exposed a Windows JDK 17 worker classpath encoding problem. Using the native encoding in the Windows launcher let JUnit run from the Chinese project path. Boundary tests made the adjacency rule executable, and restart tests checked that the in-memory schedule could be rebuilt from disk. [Development record](PROJECT_LOG.md) · [Assessment report](REPORT.md)
+Each feature branch started from the latest merged `main`. After local verification, a pull request ran the independent Ubuntu JDK 17 build in GitHub Actions before integration into `main`.
 
-The [project release](https://github.com/yinghuayaya/LabEquipmentBooking/releases/tag/v1.0.2) identifies the final version.
+[PR #1 · Equipment catalog](https://github.com/yinghuayaya/LabEquipmentBooking/pull/1) · [PR #2 · Booking rules](https://github.com/yinghuayaya/LabEquipmentBooking/pull/2) · [PR #3 · JSON persistence](https://github.com/yinghuayaya/LabEquipmentBooking/pull/3) · [PR #4 · CLI and testing](https://github.com/yinghuayaya/LabEquipmentBooking/pull/4)
 
-## References
+The empty bootstrap built successfully, but the first catalog tests exposed a Windows test-worker classpath encoding issue. Using the launcher's native encoding let JUnit run under the Chinese project path. Boundary tests checked that adjacent reservations are allowed, and restart tests checked that the schedule could be rebuilt from disk.
 
-The supplied *Software Development Tools Continuous Assessment Brief 2026–2027* defines the project requirements. References include [Kotlin Gradle compatibility](https://kotlinlang.org/docs/gradle-configure-project.html), [Gradle Wrapper](https://docs.gradle.org/8.12.1/userguide/gradle_wrapper.html), [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization), [JUnit 5](https://docs.junit.org/5.12.2/user-guide/), [JaCoCo with Gradle](https://docs.gradle.org/8.12.1/userguide/jacoco_plugin.html) and [Detekt compatibility](https://detekt.dev/docs/introduction/compatibility/).
+[Development record](PROJECT_LOG.md) · [Assessment report and academic disclosure](REPORT.md) · [Assessed release v1.0.2](https://github.com/yinghuayaya/LabEquipmentBooking/releases/tag/v1.0.2)
 
-The [assessment report](REPORT.md) includes the academic disclosure.
+## 📚 References
+
+The supplied *Software Development Tools Continuous Assessment Brief 2026–2027* defines the project requirements.
+
+- [Kotlin Gradle compatibility](https://kotlinlang.org/docs/gradle-configure-project.html)
+- [Gradle Wrapper](https://docs.gradle.org/8.12.1/userguide/gradle_wrapper.html)
+- [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
+- [JUnit 5](https://docs.junit.org/5.12.2/user-guide/)
+- [JaCoCo with Gradle](https://docs.gradle.org/8.12.1/userguide/jacoco_plugin.html)
+- [Detekt compatibility](https://detekt.dev/docs/introduction/compatibility/)
